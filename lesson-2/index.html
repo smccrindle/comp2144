@@ -40,7 +40,7 @@
         
             // STEP 8a: Create a new BABYLON scene, passing in the engine as an argument
             
-            BABYLON.MeshBuilder.CreateBox("box", {}); // Create box mesh object
+            const box = BABYLON.MeshBuilder.CreateBox("box", {}); // Create box mesh object
  
             const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 15, new BABYLON.Vector3(0, 0, 0)); // Add Arc Rotate Camera
             camera.attachControl(canvas, true); // Attach camera control to the canvas
