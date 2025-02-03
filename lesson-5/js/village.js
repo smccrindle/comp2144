@@ -98,7 +98,7 @@ const createScene = async function() {
     const wheel = BABYLON.SceneLoader.ImportMeshAsync("", "./meshes/", "wheel-r4.glb").then((result) => {
         const wheelMesh = result.meshes[0];
         const wheelBounds = result.meshes[1];
-        wheelBounds.showBoundingBox = true;
+        // wheelBounds.showBoundingBox = true;
         wheelMesh.scaling = new BABYLON.Vector3(0.1, 0.1, 0.1);
         wheelMesh.parent = car;
         wheelMesh.position = new BABYLON.Vector3(0, -0.4, 0.6);
@@ -118,7 +118,7 @@ const createScene = async function() {
     const wheel2 = BABYLON.SceneLoader.ImportMeshAsync("", "./meshes/", "wheel2-r4.glb").then((result) => {
         const wheelMesh = result.meshes[0];
         const wheelBounds = result.meshes[1];
-        wheelBounds.showBoundingBox = true;
+        // wheelBounds.showBoundingBox = true;
         wheelMesh.scaling = new BABYLON.Vector3(0.1, 0.1, 0.1);
         wheelMesh.parent = car;
         wheelMesh.position = new BABYLON.Vector3(0, -0.4, -0.6);
