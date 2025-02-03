@@ -82,12 +82,10 @@ const createScene = async function() {
     });
 
     // STEP 1: Build a simple 1x1 cube car, with a standard material and a color
-    const car = BABYLON.MeshBuilder.CreateBox("car");
-    const carMat = new BABYLON.StandardMaterial("carMat");
-    carMat.diffuseColor = new BABYLON.Color3(1, 0, 1);
-    car.material = carMat;
+    
+
     // STEP 2a: The local coordinates origin of the cube car is the reference point for scaling and positioning it within the scene - move it up 0.5 so that it sits on the ground
-    car.position = new BABYLON.Vector3(1, 0.5, -0.75);
+    
     // STEP 2b: Move it out of the way so that the 0,0,0 point in the scene is visible for the next mesh we will import
 
     // STEP 3a: Go to TinkerCAD and build a wheel (radius: 2, wall thickness: 1, sides: 12, bevel: 0, bevel segments: 0)
@@ -95,17 +93,8 @@ const createScene = async function() {
     // STEP 3c: Export the wheel as a .glb file and put it in the meshes folder
     
     // STEP 4a: Drop the wheel into the scene using the ImportMeshAsync method
-    const wheel = BABYLON.SceneLoader.ImportMeshAsync("", "./meshes/", "wheel-r4.glb").then((result) => {
-        const wheelMesh = result.meshes[0];
-        const wheelBounds = result.meshes[1];
-        // wheelBounds.showBoundingBox = true;
-        wheelMesh.scaling = new BABYLON.Vector3(0.1, 0.1, 0.1);
-        wheelMesh.parent = car;
-        wheelMesh.position = new BABYLON.Vector3(0, -0.4, 0.6);
-    }).catch((error) => {
-        console.error("Error loading wheel mesh:", error);
-        return null;
-    });
+    
+
     // STEP 4b: The wheel is 4 units radius, which is too big again - so scale it down to 1/10 the size above
     // STEP 4c: Add a bounding box to the wheel to see the dimensions of the mesh (this can be accessed via the second mesh in the result.meshes array, result.meshes[1])
 
@@ -115,62 +104,42 @@ const createScene = async function() {
     // STEP6a: Go back to TinkerCAD and export another wheel, but change the color
     // STEP6b: Copy the code in STEP 4 and paste it below, change the the const name and filename to match the new wheel
     // STEP6c: Change the position of the wheel so that it is on the other side of the car
-    const wheel2 = BABYLON.SceneLoader.ImportMeshAsync("", "./meshes/", "wheel2-r4.glb").then((result) => {
-        const wheelMesh = result.meshes[0];
-        const wheelBounds = result.meshes[1];
-        // wheelBounds.showBoundingBox = true;
-        wheelMesh.scaling = new BABYLON.Vector3(0.1, 0.1, 0.1);
-        wheelMesh.parent = car;
-        wheelMesh.position = new BABYLON.Vector3(0, -0.4, -0.6);
-    }).catch((error) => {
-        console.error("Error loading wheel2 mesh:", error);
-        return null;
-    });
+    
 
     // STEP 7: The car's wheels are stuck in the ground - we need to lift the car up so that it sits on the ground
-    car.position.y = 0.6;
+    
 
     // STEP 8: Create a new animation object
-    const animCar = new BABYLON.Animation("carAnimation", "position.x", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    
 
     // STEP 9a: Create an array for keyframes
-    const carKeys = []; 
+     
     // STEP 9b: Add the first keyframe - at key 0, the value of position.x is 0
-    carKeys.push({
-        frame: 0,
-        value: 0
-    });
+    
     // STEP 9c: at animation key 30, (after 1 sec since animation fps = 30) the value of position.x is 2
-    carKeys.push({
-        frame: 30,
-        value: 2
-    });
+    
     // STEP 9d: At animation key 60, the value of position.x is 0 again
-    carKeys.push({
-        frame: 60,
-        value: 0
-    });
+    
 
     // STEP 10: Attach the animation keys to the animation object
-    animCar.setKeys(carKeys);
+    
 
     // STEP 11: Add the animation object to the car's animations array
-    car.animations = [];
-    car.animations.push(animCar);
+    
 
     // STEP 12: Attach the animation to the scene
-    scene.beginAnimation(car, 0, 60, 1, true);
+    
 
     // STEP 13: Enable the WebXR experience, and walk around your scene using the provided VR headset
     // Check to see if WebXR (immersive-vr, specifically) is supported on this device
-    if (BABYLON.WebXRSessionManager.IsSessionSupportedAsync("immersive-vr")) {
-        const xr = await scene.createDefaultXRExperienceAsync({
-            floorMeshes: [ground],
-            optionalFeatures: true
-        });
-    } else {
-        console.log("WebXR is not supported on this device.");
-    }
+    // if (BABYLON.WebXRSessionManager.IsSessionSupportedAsync("immersive-vr")) {
+    //     const xr = await scene.createDefaultXRExperienceAsync({
+    //         floorMeshes: [ground],
+    //         optionalFeatures: true
+    //     });
+    // } else {
+    //     console.log("WebXR is not supported on this device.");
+    // }
 
     // Return the scene
     return scene;
