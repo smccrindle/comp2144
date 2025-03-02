@@ -85,7 +85,7 @@ const createScene = async function() {
     /* HIT-TEST
     ---------------------------------------------------------------------------------------------------- */
     // STEP 5: A hit-test is a standard feature in AR that permits a ray to be cast from the device (headset or phone) into the real world, and detect where it intersects with a real-world object. This enables AR apps to place objects on surfaces or walls of the real world (https://immersive-web.github.io/hit-test/). To enable hit-testing, use the enableFeature() method of the featuresManager from the base WebXR experience helper.
-    const hitTest = featuresManager.enableFeature(BABYLON.WebXRHitTest, "latest");
+    const hitTest = xr.baseExperience.featuresManager.enableFeature(BABYLON.WebXRHitTest, "latest");
 
     // STEP 6a: Create a dot to show where a hit-test has registered a surface
     const dot = BABYLON.SphereBuilder.CreateSphere("dot", {diameter: 0.05}, scene);
