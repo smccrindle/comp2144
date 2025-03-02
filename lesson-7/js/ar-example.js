@@ -137,12 +137,14 @@ const createScene = async function() {
 
     // Add event listener for touch/click
     canvas.addEventListener("click", () => {
-        if (latestHitTestResults && latestHitTestResults.length > 0) {
-            anchors.addAnchor(latestHitTestResults[0]).then((anchor) => {
+        if (latestHitTestResults && latestHitTestResults.length > 0 && anchors && xr.baseExperience.state === BABYLON.WebXRState.IN_XR) {
+            anchors.addAnchorPointUsingHitTestResultAsync(latestHitTestResults[0]).then((anchor) => {
                 anchor.attachedNode = box;
-                box.position.y += box.scaling.y/2;
+                box.position.y += box.scaling.y / 2;
+            }).catch((error) => {
+                console.error("Anchor creation error:", error);
             });
-        }
+        };
     });
 
     // Return the scene
