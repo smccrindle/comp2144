@@ -93,33 +93,56 @@ const createScene = async function() {
     marker.rotationQuaternion = new BABYLON.Quaternion();
 
     // STEP 6b: Register to get updates using the onHitTestResultObservable
+    // hitTest.onHitTestResultObservable.add((results) => {
+    //     if (results.length) {
+    //         // The hit-test ray returned a length value, so it hit something
+    //         marker.isVisible = true;
+    //         // Scale, position, and rotate marker appropriately
+    //         results[0].transformationMatrix.decompose(marker.scaling, marker.rotationQuaternion, marker.position);
+    //     } else {
+    //         // The hit-test ray returned a length value of 0, so it didn't hit anything
+    //         marker.isVisible = false;
+    //     };
+    // });
+
+    // Store the latest hit test results
+    let latestHitTestResults = null;
     hitTest.onHitTestResultObservable.add((results) => {
         if (results.length) {
-            // The hit-test ray returned a length value, so it hit something
             marker.isVisible = true;
-            // Scale, position, and rotate marker appropriately
             results[0].transformationMatrix.decompose(marker.scaling, marker.rotationQuaternion, marker.position);
+            latestHitTestResults = results; // Store the results
         } else {
-            // The hit-test ray returned a length value of 0, so it didn't hit anything
             marker.isVisible = false;
+            latestHitTestResults = null; // Clear the results
         };
     });
-
 
     /* ANCHORS
     ---------------------------------------------------------------------------------------------------- */
     // STEP 7: Anchors are a feature that allow you to place objects in the real world space and have them stay there, even if the observer moves around. To enable anchors, use the enableFeature() method of the featuresManager from the base WebXR experience helper (https://immersive-web.github.io/anchors/).
     const anchors = xr.baseExperience.featuresManager.enableFeature(BABYLON.WebXRAnchorSystem, "latest");
 
+    // canvas.addEventListener("click", () => {
+    //     hitTest.doHitTest().then((results) => {
+    //         if (results.length > 0) {
+    //             anchors.addAnchor(results[0]).then((anchor) => {
+    //                 anchor.attachedNode = box;
+    //                 // Move box up 1/2 of the scaling value so that it sits on top of the surface
+    //                 box.position.y += box.scaling.y/2;
+    //             });
+    //         }
+    //     });
+    // });
+
+    // Add event listener for touch/click
     canvas.addEventListener("click", () => {
-        hitTest.doHitTest().then((results) => {
-            if (results.length > 0) {
-                anchors.addAnchor(results[0]).then((anchor) => {
-                    anchor.attachedNode = box;
-                    box.position.y += box.scaling.y/2;
-                });
-            }
-        });
+        if (latestHitTestResults && latestHitTestResults.length > 0) {
+            anchors.addAnchor(latestHitTestResults[0]).then((anchor) => {
+                anchor.attachedNode = box;
+                box.position.y += box.scaling.y/2;
+            });
+        }
     });
 
     // Return the scene
