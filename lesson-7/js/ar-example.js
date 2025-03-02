@@ -55,6 +55,9 @@ const createScene = async function() {
     const boxMat = new BABYLON.StandardMaterial("boxMat");
     boxMat.diffuseColor = new BABYLON.Color3(1, 0.647, 0)
     box.material = boxMat;
+    // STEP 4: Move the box so it is not at your feet
+    box.position.y = 1;
+    box.position.z = 1;
 
 
     /* SOUNDS
@@ -72,9 +75,35 @@ const createScene = async function() {
         uiOptions: {
             sessionMode: "immersive-ar",
         },
-        // STEP 2c: Enable optional features - either all of them with true, or as an array
+        // STEP 2b: Enable optional features - either all of them with true, or as an array
         optionalFeatures: ["hit-test", "anchors"]
     });
+
+    // STEP 3: Commit your code and push it to a server, then try it out with a headset - notice how the orange box is right at your feet - 0, 0, 0 is located on the floor at your feet
+
+
+    /* HIT-TEST
+    ---------------------------------------------------------------------------------------------------- */
+    // STEP 5: A hit-test is a standard feature in AR that permits a ray to be cast from the device (headset or phone) into the real world, and detect where it intersects with a real-world object. This enables AR apps to place objects on surfaces or walls of the real world (https://immersive-web.github.io/hit-test/). To enable hit-testing, use the enableFeature() method of the featuresManager from the base WebXR experience helper.
+    const hitTest = featuresManager.enableFeature(BABYLON.WebXRHitTest, "latest");
+
+    // STEP 6a: Create a dot to show where a hit-test has registered a surface
+    const dot = BABYLON.SphereBuilder.CreateSphere("dot", {diameter: 0.05}, scene);
+    dot.isVisible = false;
+
+    // STEP 6b: Register to get updates using the onHitTestResultObservable
+    hitTest.onHitTestResultObservable.add((results) => {
+        if (results.length) {
+            // The hit-test ray returned a length value, so it hit something
+            dot.isVisible = true;
+            // Scale dot appropriately
+            results[0].transformationMatrix.decompose(dot.scaling, dot.rotationQuaternion, dot.position);
+        } else {
+            // The hit-test ray returned a length value of 0, so it didn't hit anything
+            dot.isVisible = false;
+        };
+    });
+
 
     // Return the scene
     return scene;
