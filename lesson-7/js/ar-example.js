@@ -111,14 +111,13 @@ const createScene = async function() {
     // STEP 7: Anchors are a feature that allow you to place objects in the real world space and have them stay there, even if the observer moves around. To enable anchors, use the enableFeature() method of the featuresManager from the base WebXR experience helper (https://immersive-web.github.io/anchors/).
     const anchors = xr.baseExperience.featuresManager.enableFeature(BABYLON.WebXRAnchorSystem, "latest");
 
-    // Add event listener for touch/click
     canvas.addEventListener("click", () => {
         hitTest.doHitTest().then((results) => {
             if (results.length > 0) {
-                // Move the box to the hit test result
-                results[0].transformationMatrix.decompose(box.scaling, box.rotationQuaternion, box.position);
-                // Adjust for box size
-                box.position.y += box.scaling.y/2;
+                anchors.addAnchor(results[0]).then((anchor) => {
+                    anchor.attachedNode = box;
+                    box.position.y += box.scaling.y/2;
+                });
             }
         });
     });
@@ -137,4 +136,4 @@ window.addEventListener("resize", function() {
     engine.resize();
 });
 
-// Thanks to the great documentation at https://doc.babylonjs.com/
+// Thanks to the great documentation at https://doc.babylonjs.com/, some excellent re-factoring of my code by Gemini, and some code writing assistance from CoPilot.
