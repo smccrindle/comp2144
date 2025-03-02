@@ -51,7 +51,7 @@ const createScene = async function() {
     /* MESHES
     ---------------------------------------------------------------------------------------------------- */
     // STEP 1: Create a simple box, and apply a material and a colour to it.
-    const box = BABYLON.MeshBuilder.CreateBox("box", {size: 1}, scene);
+    const box = BABYLON.MeshBuilder.CreateBox("box", {size: 0.5}, scene);
     const boxMat = new BABYLON.StandardMaterial("boxMat");
     boxMat.diffuseColor = new BABYLON.Color3(1, 0.647, 0)
     box.material = boxMat;
@@ -97,7 +97,7 @@ const createScene = async function() {
         if (results.length) {
             // The hit-test ray returned a length value, so it hit something
             marker.isVisible = true;
-            // Scale marker appropriately
+            // Scale, position, and rotate marker appropriately
             results[0].transformationMatrix.decompose(marker.scaling, marker.rotationQuaternion, marker.position);
         } else {
             // The hit-test ray returned a length value of 0, so it didn't hit anything
@@ -111,7 +111,17 @@ const createScene = async function() {
     // STEP 7: Anchors are a feature that allow you to place objects in the real world space and have them stay there, even if the observer moves around. To enable anchors, use the enableFeature() method of the featuresManager from the base WebXR experience helper (https://immersive-web.github.io/anchors/).
     const anchors = xr.baseExperience.featuresManager.enableFeature(BABYLON.WebXRAnchorSystem, "latest");
 
-
+    // Add event listener for touch/click
+    canvas.addEventListener("click", () => {
+        hitTest.doHitTest().then((results) => {
+            if (results.length > 0) {
+                // Move the box to the hit test result
+                results[0].transformationMatrix.decompose(box.scaling, box.rotationQuaternion, box.position);
+                // Adjust for box size
+                box.position.y += box.scaling.y/2;
+            }
+        });
+    });
 
     // Return the scene
     return scene;
