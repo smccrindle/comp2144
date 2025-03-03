@@ -5,8 +5,9 @@
 // 3. Upload the scene and try it using an AR-capable headset (or mobile with Android)
 // 4. Add a hit-test
 // 5. Tour the Immersive Web Emulator: https://developer.oculus.com/blog/webxr-development-immersive-web-emulator/
-
 // 6. Anchors? These allow you to place object in the real world space and have them stay there, even if the observer moves around
+
+
 // 7. Planes? This feature helps the app to detect flat surfaces, like tables, floors, or walls and place objects on them
 // 8. Get hit-test co-ordinates and place a box there
 // 9. Make box 'clickable' and change color on touch?
@@ -78,8 +79,8 @@ const createScene = async function() {
         uiOptions: {
             sessionMode: "immersive-ar",
         },
-        // STEP 2b: Enable optional features - either all of them with true, or as an array
-        optionalFeatures: ["hit-test", "anchors"]
+        // STEP 2b: Enable optional features - either all of them with true (boolean), or as an array
+        optionalFeatures: ["unbounded", "hit-test", "anchors"]
     });
 
     // STEP 3: Commit your code and push it to a server, then try it out with a headset - notice how the orange box is right at your feet - 0, 0, 0 is located on the floor at your feet
@@ -94,28 +95,31 @@ const createScene = async function() {
     const marker = BABYLON.MeshBuilder.CreateTorus('marker', { diameter: 0.15, thickness: 0.05 });
     marker.isVisible = false;
     marker.rotationQuaternion = new BABYLON.Quaternion();
-
+    // STEP 6b: Create a variable to store the latest hit-test results
     let latestHitTestResults = null;
+    // STEP 6c: Add an event listener for the hit-test results
     hitTest.onHitTestResultObservable.add((results) => {
+        // STEP 6d: If there is a hit-test result, turn on the marker, and extract the position, rotation, and scaling from the hit-test result
         if (results.length) {
             marker.isVisible = true;
             results[0].transformationMatrix.decompose(marker.scaling, marker.rotationQuaternion, marker.position);
             latestHitTestResults = results; // Store the results
         } else {
+            // STEP 6e: If there is no hit-test result, turn off the marker and clear the stored results
             marker.isVisible = false;
             latestHitTestResults = null; // Clear the results
         };
     });
 
 
-    /* ANCHORS (For next lesson)
+    /* ANCHORS
     ---------------------------------------------------------------------------------------------------- */
     // STEP 7: Anchors are a feature that allow you to place objects in the real world space and have them stay there, even if the observer moves around. To enable anchors, use the enableFeature() method of the featuresManager from the base WebXR experience helper (https://immersive-web.github.io/anchors/).
     const anchors = xr.baseExperience.featuresManager.enableFeature(BABYLON.WebXRAnchorSystem, "latest");
 
-    // Add event listener for touch/click (click or touchstart)
+    // STEP 8a: Add event listener for click (and simulate this in the Immersive Web Emulator)
     canvas.addEventListener("click", () => {
-        if (latestHitTestResults && latestHitTestResults.length > 0 && anchors && xr.baseExperience.state === BABYLON.WebXRState.IN_XR) {
+        if (latestHitTestResults && latestHitTestResults.length > 0) {
             anchors.addAnchorPointUsingHitTestResultAsync(latestHitTestResults[0]).then((anchor) => {
                 anchor.attachedNode = box;
                 box.position.y += box.scaling.y / 2;
