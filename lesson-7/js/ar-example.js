@@ -4,11 +4,13 @@
 // 2. Show how to enable a WebXR session for AR
 // 3. Upload the scene and try it using an AR-capable headset (or mobile with Android)
 // 4. Add a hit-test
-// 5. Tour the 
-// 5. Anchors? These allow you to place object in the real world space and have them stay there, even if the observer moves around
-// 6. Planes? This feature helps the app to detect flat surfaces, like tables, floors, or walls and place objects on them
-// 7. Make box 'clickable' and change color on touch?
-// 8. DOM element (range slider) to control box rotation?
+// 5. Tour the Immersive Web Emulator: https://developer.oculus.com/blog/webxr-development-immersive-web-emulator/
+
+// 6. Anchors? These allow you to place object in the real world space and have them stay there, even if the observer moves around
+// 7. Planes? This feature helps the app to detect flat surfaces, like tables, floors, or walls and place objects on them
+// 8. Get hit-test co-ordinates and place a box there
+// 9. Make box 'clickable' and change color on touch?
+// 10. DOM element (range slider) to control box rotation or position?
 
 
 
@@ -93,20 +95,6 @@ const createScene = async function() {
     marker.isVisible = false;
     marker.rotationQuaternion = new BABYLON.Quaternion();
 
-    // STEP 6b: Register to get updates using the onHitTestResultObservable
-    // hitTest.onHitTestResultObservable.add((results) => {
-    //     if (results.length) {
-    //         // The hit-test ray returned a length value, so it hit something
-    //         marker.isVisible = true;
-    //         // Scale, position, and rotate marker appropriately
-    //         results[0].transformationMatrix.decompose(marker.scaling, marker.rotationQuaternion, marker.position);
-    //     } else {
-    //         // The hit-test ray returned a length value of 0, so it didn't hit anything
-    //         marker.isVisible = false;
-    //     };
-    // });
-
-    // Store the latest hit test results
     let latestHitTestResults = null;
     hitTest.onHitTestResultObservable.add((results) => {
         if (results.length) {
@@ -119,22 +107,11 @@ const createScene = async function() {
         };
     });
 
-    /* ANCHORS
+
+    /* ANCHORS (For next lesson)
     ---------------------------------------------------------------------------------------------------- */
     // STEP 7: Anchors are a feature that allow you to place objects in the real world space and have them stay there, even if the observer moves around. To enable anchors, use the enableFeature() method of the featuresManager from the base WebXR experience helper (https://immersive-web.github.io/anchors/).
     const anchors = xr.baseExperience.featuresManager.enableFeature(BABYLON.WebXRAnchorSystem, "latest");
-
-    // canvas.addEventListener("click", () => {
-    //     hitTest.doHitTest().then((results) => {
-    //         if (results.length > 0) {
-    //             anchors.addAnchor(results[0]).then((anchor) => {
-    //                 anchor.attachedNode = box;
-    //                 // Move box up 1/2 of the scaling value so that it sits on top of the surface
-    //                 box.position.y += box.scaling.y/2;
-    //             });
-    //         }
-    //     });
-    // });
 
     // Add event listener for touch/click (click or touchstart)
     canvas.addEventListener("click", () => {
@@ -148,45 +125,7 @@ const createScene = async function() {
         };
     });
 
-    // For hand controller
-
-    if (xr.input) {
-        xr.input.onControllerAddedObservable.add((controller) => {
-            controller.onMotionControllerInitObservable.add(() => {
-                controller.motionController.onModelLoadedObservable.add(() => {
-                    const mainComponent = controller.motionController.getMainComponent();
     
-                    if (mainComponent) {
-                        mainComponent.onButtonStateChangedObservable.add((event) => {
-                            if (event.id === "trigger") { // Check for the trigger button
-                                if (event.pressed) {
-                                    // Trigger pressed
-                                    console.log("Trigger pressed");
-                                    // Place your logic here
-                                    if (latestHitTestResults && latestHitTestResults.length > 0 && anchors && xr.baseExperience.state === BABYLON.WebXRState.IN_XR) {
-                                        anchors.addAnchorPointUsingHitTestResultAsync(latestHitTestResults[0]).then((anchor) => {
-                                            anchor.attachedNode = box;
-                                            box.position.y += box.scaling.y / 2;
-                                        }).catch((error) => {
-                                            console.error("Anchor creation error:", error);
-                                        });
-                                    }
-                                } else {
-                                    // Trigger released
-                                    console.log("Trigger released");
-                                    // Place logic here.
-                                }
-    
-                                // Accessing the trigger value (0-1)
-                                console.log("Trigger value:", event.value);
-                            }
-                        });
-                    }
-                });
-            });
-        });
-    }
-
     // Return the scene
     return scene;
 };
