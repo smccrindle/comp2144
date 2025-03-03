@@ -4,6 +4,7 @@
 // 2. Show how to enable a WebXR session for AR
 // 3. Upload the scene and try it using an AR-capable headset (or mobile with Android)
 // 4. Add a hit-test
+// 5. Tour the 
 // 5. Anchors? These allow you to place object in the real world space and have them stay there, even if the observer moves around
 // 6. Planes? This feature helps the app to detect flat surfaces, like tables, floors, or walls and place objects on them
 // 7. Make box 'clickable' and change color on touch?
@@ -135,8 +136,8 @@ const createScene = async function() {
     //     });
     // });
 
-    // Add event listener for touch/click
-    canvas.addEventListener("click", () => {
+    // Add event listener for touch/click (click or touchstart)
+    canvas.addEventListener("touchstart", () => {
         if (latestHitTestResults && latestHitTestResults.length > 0 && anchors && xr.baseExperience.state === BABYLON.WebXRState.IN_XR) {
             anchors.addAnchorPointUsingHitTestResultAsync(latestHitTestResults[0]).then((anchor) => {
                 anchor.attachedNode = box;
