@@ -137,7 +137,7 @@ const createScene = async function() {
     // });
 
     // Add event listener for touch/click (click or touchstart)
-    canvas.addEventListener("touchstart", () => {
+    canvas.addEventListener("click", () => {
         if (latestHitTestResults && latestHitTestResults.length > 0 && anchors && xr.baseExperience.state === BABYLON.WebXRState.IN_XR) {
             anchors.addAnchorPointUsingHitTestResultAsync(latestHitTestResults[0]).then((anchor) => {
                 anchor.attachedNode = box;
@@ -147,6 +147,45 @@ const createScene = async function() {
             });
         };
     });
+
+    // For hand controller
+
+    if (xr.input) {
+        xr.input.onControllerAddedObservable.add((controller) => {
+            controller.onMotionControllerInitObservable.add(() => {
+                controller.motionController.onModelLoadedObservable.add(() => {
+                    const mainComponent = controller.motionController.getMainComponent();
+    
+                    if (mainComponent) {
+                        mainComponent.onButtonStateChangedObservable.add((event) => {
+                            if (event.id === "trigger") { // Check for the trigger button
+                                if (event.pressed) {
+                                    // Trigger pressed
+                                    console.log("Trigger pressed");
+                                    // Place your logic here
+                                    if (latestHitTestResults && latestHitTestResults.length > 0 && anchors && xr.baseExperience.state === BABYLON.WebXRState.IN_XR) {
+                                        anchors.addAnchorPointUsingHitTestResultAsync(latestHitTestResults[0]).then((anchor) => {
+                                            anchor.attachedNode = box;
+                                            box.position.y += box.scaling.y / 2;
+                                        }).catch((error) => {
+                                            console.error("Anchor creation error:", error);
+                                        });
+                                    }
+                                } else {
+                                    // Trigger released
+                                    console.log("Trigger released");
+                                    // Place logic here.
+                                }
+    
+                                // Accessing the trigger value (0-1)
+                                console.log("Trigger value:", event.value);
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    }
 
     // Return the scene
     return scene;
