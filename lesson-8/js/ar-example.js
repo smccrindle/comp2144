@@ -58,7 +58,7 @@ const createScene = async function() {
     const xr = await scene.createDefaultXRExperienceAsync({
         uiOptions: {
             sessionMode: "immersive-ar",
-            referenceSpaceType: "unbounded-floor" // viewer, local, local-floor, bounded-floor, or unbounded (https://developer.mozilla.org/en-US/docs/Web/API/XRReferenceSpace)
+            referenceSpaceType: "local-floor" // viewer, local, local-floor, bounded-floor, or unbounded (https://developer.mozilla.org/en-US/docs/Web/API/XRReferenceSpace)
 
         },
         // Enable optional features - either all of them with true (boolean), or as an array
