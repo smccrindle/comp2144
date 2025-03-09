@@ -116,7 +116,7 @@ const createScene = async function() {
     // STEP 2: Add the plane detection and rendering code from https://playground.babylonjs.com/#98TM63
     const planes = [];
 
-    xrPlanes.onPlaneAddedObservable.add(plane => {
+    planeDetector.onPlaneAddedObservable.add(plane => {
         plane.polygonDefinition.push(plane.polygonDefinition[0]);
         var polygon_triangulation = new BABYLON.PolygonMeshBuilder("name", plane.polygonDefinition.map((p) => new BABYLON.Vector2(p.x, p.z)), scene);
         var polygon = polygon_triangulation.build(false, 0.01);
@@ -133,7 +133,7 @@ const createScene = async function() {
         plane.transformationMatrix.decompose(plane.mesh.scaling, plane.mesh.rotationQuaternion, plane.mesh.position);
     });
 
-    xrPlanes.onPlaneUpdatedObservable.add(plane => {
+    planeDetector.onPlaneUpdatedObservable.add(plane => {
         let mat;
         if (plane.mesh) {
             // keep the material, dispose the old polygon
@@ -155,7 +155,7 @@ const createScene = async function() {
         plane.transformationMatrix.decompose(plane.mesh.scaling, plane.mesh.rotationQuaternion, plane.mesh.position);
     })
 
-    xrPlanes.onPlaneRemovedObservable.add(plane => {
+    planeDetector.onPlaneRemovedObservable.add(plane => {
         if (plane && planes[plane.id]) {
             planes[plane.id].dispose()
         }
