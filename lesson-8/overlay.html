@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebXR DOM Overlay Test (No Babylon.js)</title>
+    <style>
+        #rangeOverlay {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            pointer-events: auto;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <input type="range" id="rangeOverlay" min="0" max="100" value="50">
+    <script>
+        async function startXR() {
+            if (navigator.xr) {
+                try {
+                    const session = await navigator.xr.requestSession("immersive-ar", {
+                        requiredFeatures: ["dom-overlay"],
+                        domOverlay: { root: document.body } // Use body as root
+                    });
+
+                    session.addEventListener("end", () => {
+                        console.log("XR session ended");
+                    });
+
+                    session.updateRenderState({ baseLayer: new XRWebGLLayer(session) });
+
+                    const referenceSpace = await session.requestReferenceSpace("local-floor");
+
+                    session.requestAnimationFrame(function onXRFrame(time, frame) {
+                        session.requestAnimationFrame(onXRFrame);
+                    });
+
+                } catch (error) {
+                    console.error("WebXR Error:", error);
+                }
+            } else {
+                console.error("WebXR not supported");
+            }
+        }
+
+        startXR();
+    </script>
+</body>
+</html>
