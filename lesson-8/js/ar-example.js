@@ -55,6 +55,8 @@ const createScene = async function() {
     /* ENABLE AR
     ---------------------------------------------------------------------------------------------------- */
     // Start a WebXR session (immersive-ar, specifically)
+    console.log("Overlay element:", document.getElementById("overlay")); // Add this line
+
     const xr = await scene.createDefaultXRExperienceAsync({
         uiOptions: {
             sessionMode: "immersive-ar",
