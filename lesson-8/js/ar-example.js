@@ -109,19 +109,19 @@ const createScene = async function() {
         };
     });
     
-    /* DOM OVERLAY
-    ---------------------------------------------------------------------------------------------------- */
-    // Add an event listener to the range input
-    document.getElementById("myRange").addEventListener("change", (event) => {
-        const value = event.target.value;
-        document.getElementById("rangeValue").textContent = value;
-        // Use the range value in your AR scene...
-    });
-
 
     // Return the scene
     return scene;
 };
+
+/* DOM OVERLAY
+---------------------------------------------------------------------------------------------------- */
+// Add an event listener to the range input
+document.getElementById("myRange").addEventListener("change", (event) => {
+    let value = event.target.value;
+    document.getElementById("rangeValue").textContent = value;
+    // Use the range value in your AR scene...
+});
 
 // Continually render the scene in an endless loop
 createScene().then((sceneToRender) => {
