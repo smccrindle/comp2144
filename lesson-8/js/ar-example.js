@@ -118,8 +118,7 @@ const createScene = async function() {
 ---------------------------------------------------------------------------------------------------- */
 // Add an event listener to the range input
 document.getElementById("myRange").addEventListener("change", (event) => {
-    let value = event.target.value;
-    document.getElementById("rangeValue").textContent = value;
+    document.getElementById("rangeLabel").textContent = event.target.value;
     // Use the range value in your AR scene...
 });
 
