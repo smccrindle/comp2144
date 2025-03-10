@@ -58,15 +58,13 @@ const createScene = async function() {
     const xr = await scene.createDefaultXRExperienceAsync({
         uiOptions: {
             sessionMode: "immersive-ar",
-            referenceSpaceType: "local-floor", // viewer, local, local-floor, bounded-floor, or unbounded (https://developer.mozilla.org/en-US/docs/Web/API/XRReferenceSpace and https://gist.github.com/lempa/64b3a89a19cbec980ade709be35d7cbc#file-webxr-reference-space-types-csv)
-            overlay: {
-                element: document.getElementById("overlay")
-            }
+            referenceSpaceType: "local-floor" // viewer, local, local-floor, bounded-floor, or unbounded (https://developer.mozilla.org/en-US/docs/Web/API/XRReferenceSpace and https://gist.github.com/lempa/64b3a89a19cbec980ade709be35d7cbc#file-webxr-reference-space-types-csv)
+
         },
         // Enable optional features - either all of them with true (boolean), or as an array
         optionalFeatures: true
     });
-    // STEP 1: Add a DOM overlay to the uiOptions object, then proceed to index.html for STEP 2
+
 
     /* HIT-TEST
     ---------------------------------------------------------------------------------------------------- */
@@ -109,13 +107,63 @@ const createScene = async function() {
         };
     });
     
-    /* DOM OVERLAY
+    /* PLANE DETECTION
     ---------------------------------------------------------------------------------------------------- */
-    // Add an event listener to the range input
-    document.getElementById("myRange").addEventListener("change", (event) => {
-        const value = event.target.value;
-        document.getElementById("rangeValue").textContent = value;
-        // Use the range value in your AR scene...
+    // STEP 1a: Plane detection is a hardware capability whereby the AR device is able to detect flat surfaces in the real-world environment. To enable plane detection, use the enableFeature() method of the featuresManager from the base WebXR experience helper.
+    const planeDetector = xr.baseExperience.featuresManager.enableFeature(BABYLON.WebXRPlaneDetector, "latest", { doNotRemovePlanesOnSessionEnded: true });
+    // STEP 1b: If you'd like, you can retain planes between AR sessions, with doNotRemovePlanesOnSessionEnded - add this above as the 3rd parameter.
+
+    // STEP 2: Add the plane detection and rendering code from https://playground.babylonjs.com/#98TM63
+    const planes = [];
+
+    planeDetector.onPlaneAddedObservable.add(plane => {
+        plane.polygonDefinition.push(plane.polygonDefinition[0]);
+        var polygon_triangulation = new BABYLON.PolygonMeshBuilder("name", plane.polygonDefinition.map((p) => new BABYLON.Vector2(p.x, p.z)), scene);
+        var polygon = polygon_triangulation.build(false, 0.01);
+        plane.mesh = polygon; 
+        planes[plane.id] = (plane.mesh);
+        const mat = new BABYLON.StandardMaterial("mat", scene);
+        mat.alpha = 0.5;
+        // pick a random color
+        mat.diffuseColor = BABYLON.Color3.Random();
+        polygon.createNormals();
+        plane.mesh.material = mat;
+
+        plane.mesh.rotationQuaternion = new BABYLON.Quaternion();
+        plane.transformationMatrix.decompose(plane.mesh.scaling, plane.mesh.rotationQuaternion, plane.mesh.position);
+    });
+
+    planeDetector.onPlaneUpdatedObservable.add(plane => {
+        let mat;
+        if (plane.mesh) {
+            // keep the material, dispose the old polygon
+            mat = plane.mesh.material;
+            plane.mesh.dispose(false, false);
+        }
+        const some = plane.polygonDefinition.some(p => !p);
+        if (some) {
+            return;
+        }
+        plane.polygonDefinition.push(plane.polygonDefinition[0]);
+        var polygon_triangulation = new BABYLON.PolygonMeshBuilder("name", plane.polygonDefinition.map((p) => new BABYLON.Vector2(p.x, p.z)), scene);
+        var polygon = polygon_triangulation.build(false, 0.01);
+        polygon.createNormals();
+        plane.mesh = polygon;
+        planes[plane.id] = (plane.mesh);
+        plane.mesh.material = mat;
+        plane.mesh.rotationQuaternion = new BABYLON.Quaternion();
+        plane.transformationMatrix.decompose(plane.mesh.scaling, plane.mesh.rotationQuaternion, plane.mesh.position);
+    })
+
+    planeDetector.onPlaneRemovedObservable.add(plane => {
+        if (plane && planes[plane.id]) {
+            planes[plane.id].dispose()
+        }
+    })
+
+    xr.baseExperience.sessionManager.onXRSessionInit.add(() => {
+        planes.forEach(plane => plane.dispose());
+        while (planes.pop()) { };
     });
 
 
