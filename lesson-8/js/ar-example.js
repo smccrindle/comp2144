@@ -119,10 +119,10 @@ const createScene = async function() {
 /* DOM OVERLAY
 ---------------------------------------------------------------------------------------------------- */
 // Add an event listener to the range input
-document.getElementById("myRange").addEventListener("change", (event) => {
-    document.getElementById("rangeLabel").textContent = event.target.value;
-    // Use the range value in your AR scene...
-});
+// document.getElementById("myRange").addEventListener("change", (event) => {
+//     document.getElementById("rangeLabel").textContent = event.target.value;
+//     // Use the range value in your AR scene...
+// });
 
 // Continually render the scene in an endless loop
 createScene().then((sceneToRender) => {
