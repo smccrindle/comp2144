@@ -58,7 +58,7 @@ const createScene = async function() {
     const xr = await scene.createDefaultXRExperienceAsync({
         uiOptions: {
             sessionMode: "immersive-ar",
-            referenceSpaceType: "local-floor", // viewer, local, local-floor, bounded-floor, or unbounded (https://developer.mozilla.org/en-US/docs/Web/API/XRReferenceSpace and https://gist.github.com/lempa/64b3a89a19cbec980ade709be35d7cbc#file-webxr-reference-space-types-csv)
+            referenceSpaceType: "unbounded", // viewer, local, local-floor, bounded-floor, or unbounded (https://developer.mozilla.org/en-US/docs/Web/API/XRReferenceSpace and https://gist.github.com/lempa/64b3a89a19cbec980ade709be35d7cbc#file-webxr-reference-space-types-csv)
             overlay: {
                 element: document.getElementById("overlay")
             }
@@ -133,3 +133,16 @@ window.addEventListener("resize", function() {
 });
 
 // Thanks to the great documentation at https://doc.babylonjs.com/, some excellent re-factoring of my code by Gemini, and some code writing assistance from CoPilot.
+
+/*
+Reference Space Type: When working with XR, you need to define how the virtual world's coordinate system relates to the real world. This is handled by the "reference space." There are different types of reference spaces:
+
+- Local: The origin (0, 0, 0) is at the user's starting position. Movement is tracked relative to this initial point. This space is great for static AR, where the user does not move.
+- Local-Floor: Similar to "local," but the y-axis (vertical) is adjusted to be at floor level. Good for AR apps where the user is standing on a floor.
+- Bounded-Floor: Used to specify an area for the experience, like a room or defined area. Good for static environments that fit within a given space.
+- Unbounded: This is the crucial one here. It means there are no limits to the tracking area. The origin of the virtual world can move as the user moves. This is essential for walking-around AR experiences where you want objects to stay anchored to real-world positions, even if the user roams around.
+
+Recommendation: When you choose to create an immersive-ar session, you typically want objects placed in your AR world to be anchored to the real world as the user walks around in it. The user could walk around the room, or even around a large field. The unbounded reference space is the only one capable of that behavior. It allows the user to move anywhere and still have your AR objects stay in their correct place relative to real world objects.
+
+(Gemini - from Chrome DevTools)
+*/
