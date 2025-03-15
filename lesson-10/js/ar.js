@@ -72,7 +72,27 @@ const createScene = async function() {
     box.actionManager = new BABYLON.ActionManager(scene);
 
     // STEP 2: Secondly, you'd register an action associated with the BABYLON.ActionManager.OnPickTrigger trigger. This action will interpolate the mesh.visibility property to 0.2.
-    box.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, box, "visibility", 0.2, 1000)).then(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, box, "visibility", 1.0, 1000));
+    // box.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, box, "visibility", 0.2, 1000)).then(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, box, "visibility", 1.0, 1000));
+
+    // Hand tracking collision detection
+    scene.onBeforeRenderObservable.add(() => {
+        if (xrHelper.input.hand.left) {
+            checkHandCollisions(xrHelper.input.hand.left, box);
+        };
+        if (xrHelper.input.hand.right) {
+            checkHandCollisions(xrHelper.input.hand.right, box);
+        };
+    });
+
+    function checkHandCollisions(hand, targetMesh) {
+        hand.joints.forEach((joint) => {
+            if (joint.mesh && joint.mesh.intersectsMesh(targetMesh)) {
+                console.log("Hand touched the box!");
+                // Trigger your touch event here
+                box.material.diffuseColor = BABYLON.Color3.Random();
+            }
+        });
+    };
 
 
     // Return the scene
