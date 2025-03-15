@@ -72,7 +72,7 @@ const createScene = async function() {
     box.actionManager = new BABYLON.ActionManager(scene);
 
     // STEP 2: Secondly, you'd register an action associated with the BABYLON.ActionManager.OnPickTrigger trigger. This action will interpolate the mesh.visibility property to 0.2.
-    mesh.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, mesh, "visibility", 0.2, 1000)).then(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, mesh, "visibility", 1.0, 1000));
+    box.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, box, "visibility", 0.2, 1000)).then(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, box, "visibility", 1.0, 1000));
 
 
     // Return the scene
