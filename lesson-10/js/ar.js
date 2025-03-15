@@ -76,23 +76,22 @@ const createScene = async function() {
 
     // Hand tracking collision detection
     scene.onBeforeRenderObservable.add(() => {
-        if (xr.input.hand.left) {
-            checkHandCollisions(xrHelper.input.hand.left, box);
-        };
-        if (xr.input.hand.right) {
-            checkHandCollisions(xrHelper.input.hand.right, box);
-        };
-    });
-
-    function checkHandCollisions(hand, targetMesh) {
-        hand.joints.forEach((joint) => {
-            if (joint.mesh && joint.mesh.intersectsMesh(targetMesh)) {
-                console.log("Hand touched the box!");
-                // Trigger your touch event here
-                box.material.diffuseColor = BABYLON.Color3.Random();
-            }
+        xr.input.controllers.forEach((controller) => {
+          if (controller.hand && controller.hand.trackingState === BABYLON.WebXRHandTracking.TRACKING_ENABLED) {
+            checkHandCollisions(controller.hand, box);
+          }
         });
-    };
+      });
+    
+      function checkHandCollisions(hand, targetMesh) {
+        hand.joints.forEach((joint) => {
+          if (joint.mesh && joint.mesh.intersectsMesh(targetMesh)) {
+            console.log("Hand touched the box!");
+            // Trigger your touch event here
+            box.material.diffuseColor = BABYLON.Color3.Random();
+          }
+        });
+      }
 
 
     // Return the scene
