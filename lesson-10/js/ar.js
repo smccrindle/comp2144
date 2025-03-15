@@ -75,10 +75,32 @@ const createScene = async function() {
     // box.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, box, "visibility", 0.2, 1000)).then(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, box, "visibility", 1.0, 1000));
 
     // STEP XX: Scale the mesh slightly on hover (BABYLON.ActionManager.OnPointerOverTrigger)
-    box.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPointerOverTrigger, box, "scaling", 1.2, 1000)).then(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPointerOutTrigger, box, "scaling", 1.0, 1000));
+    // box.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPointerOverTrigger, box, "scaling", 1.2, 1000)).then(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPointerOutTrigger, box, "scaling", 1.0, 1000));
+
+    // STEP XX: Scale the mesh slightly on hover (BABYLON.ActionManager.OnPointerOverTrigger)
+box.actionManager.registerAction(
+    new BABYLON.InterpolateValueAction(
+        BABYLON.ActionManager.OnPointerOverTrigger,
+        box,
+        "scaling",
+        new BABYLON.Vector3(1.2, 1.2, 1.2), // Use Vector3 for scaling
+        1000
+    )
+);
+
+box.actionManager.registerAction(
+    new BABYLON.InterpolateValueAction(
+        BABYLON.ActionManager.OnPointerOutTrigger,
+        box,
+        "scaling",
+        new BABYLON.Vector3(1, 1, 1), // Use Vector3 for scaling
+        1000
+    )
+);
+
 
     // STEP XX: Change the color of the mesh on click (BABYLON.ActionManager.OnPickTrigger)
-    box.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, box, "material.diffuseColor", BABYLON.Color3.Random(), 1000));
+    // box.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, box, "material.diffuseColor", BABYLON.Color3.Random(), 1000));
 
     // box.material.diffuseColor = BABYLON.Color3.Random();
 
