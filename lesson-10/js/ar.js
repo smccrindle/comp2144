@@ -76,10 +76,10 @@ const createScene = async function() {
 
     // Hand tracking collision detection
     scene.onBeforeRenderObservable.add(() => {
-        if (xrHelper.input.hand.left) {
+        if (xr.input.hand.left) {
             checkHandCollisions(xrHelper.input.hand.left, box);
         };
-        if (xrHelper.input.hand.right) {
+        if (xr.input.hand.right) {
             checkHandCollisions(xrHelper.input.hand.right, box);
         };
     });
