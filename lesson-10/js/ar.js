@@ -1,8 +1,9 @@
 /* LESSON TODO
  * 1. Hover action DONE
  * 2. Click action DONE
- * 3. Native GUI controls
- * 4. Plane detection (maybe leave this in Lesson 9?)
+ * 3. Grab and drag behaviour DONE
+ * 4. Native GUI controls
+ * 5. Plane detection (maybe leave this in Lesson 9?)
 
 */
 // Get the canvas element as a const
@@ -106,7 +107,7 @@ const createScene = async function() {
             BABYLON.ActionManager.OnPointerOutTrigger,
             box,
             "scaling",
-            new BABYLON.Vector3(1, 1, 1), // Use Vector3 for scaling
+            new BABYLON.Vector3(1, 1, 1),
             250
         )
     );
@@ -134,9 +135,9 @@ const createScene = async function() {
     // STEP 6d: Build a simple function to change the material.diffuseColor of the box to a random color
     function changeBoxColor() {
         box.material.diffuseColor = BABYLON.Color3.Random();
-    }
+    };
 
-    // STEP 8: Make the can grabbable and moveable 
+    // STEP 8: Make the can grabbable and moveable (awesome)! 
     can.bakeCurrentTransformIntoVertices().addBehavior(new BABYLON.SixDofDragBehavior());
 
 
@@ -154,4 +155,4 @@ window.addEventListener("resize", function() {
     engine.resize();
 });
 
-// Thanks to the great documentation at https://doc.babylonjs.com/, some excellent re-factoring of my code by Gemini, and some code writing assistance from CoPilot.
+// The grab and drag behaviour is thanks to the forum article at https://forum.babylonjs.com/t/near-dragging-a-mesh-in-immersive-vr-with-and-without-sixdofdragbehavior/48963 and the referenced playground at https://playground.babylonjs.com/#AZML8U#225
