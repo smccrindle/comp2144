@@ -110,7 +110,7 @@ const createScene = async function() {
     /* PLANE DETECTION
     ---------------------------------------------------------------------------------------------------- */
     // STEP 1a: Plane detection is a hardware capability whereby the AR device is able to detect flat surfaces in the real-world environment. To enable plane detection, use the enableFeature() method of the featuresManager from the base WebXR experience helper.
-    const planeDetector = xr.baseExperience.featuresManager.enableFeature(BABYLON.WebXRPlaneDetector, "latest", { doNotRemovePlanesOnSessionEnded: true });
+    const planeDetector = xr.baseExperience.featuresManager.enableFeature(BABYLON.WebXRPlaneDetector, "latest", { doNotRemovePlanesOnSessionEnded: false });
     // STEP 1b: If you'd like, you can retain planes between AR sessions, with doNotRemovePlanesOnSessionEnded - add this above as the 3rd parameter.
 
     // STEP 2: Add the plane detection and rendering code from https://playground.babylonjs.com/#98TM63
