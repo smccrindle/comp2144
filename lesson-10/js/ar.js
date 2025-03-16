@@ -106,15 +106,20 @@ const createScene = async function() {
     );
 
     // STEP 5a: Set up a "click" effect - register a third actionChange the color of the mesh on click (BABYLON.ActionManager.OnPickTrigger)
+    function changeBoxColor() {
+        box.material.diffuseColor = BABYLON.Color3.Random();
+    }
+    
     box.actionManager.registerAction(
-        new BABYLON.SetValueAction(
-            BABYLON.ActionManager.OnPickTrigger, box, "material.diffuseColor", BABYLON.Color3.Random()
+        new BABYLON.ExecuteCodeAction(
+            BABYLON.ActionManager.OnPickTrigger,
+            changeBoxColor
         )
     );
-    
+
     // box.actionManager.registerAction(
-    //     new BABYLON.InterpolateValueAction(
-    //         BABYLON.ActionManager.OnPickTrigger, box, "material.diffuseColor", BABYLON.Color3.Random(), 1000
+    //     new BABYLON.SetValueAction(
+    //         BABYLON.ActionManager.OnPickTrigger, box, "material.diffuseColor", BABYLON.Color3.Random()
     //     )
     // );
 
