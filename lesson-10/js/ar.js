@@ -45,9 +45,9 @@ const createScene = async function() {
     const boxMat = new BABYLON.StandardMaterial("boxMat");
     boxMat.diffuseColor = new BABYLON.Color3(1, 0.6, 0);
     box.material = boxMat;
-    // Move the box so it is not at your feet
+    // The initial position of the box is 0, 0, 0 so with the referenceSpaceType: "unbounded" it will be located on the viewer's head, which is the origin point of the scene - reposition the box as you'd like
     // box.position.y = 0.5;
-    // box.position.z = 1;
+    // box.position.z = 0.5;
 
 
     /* SOUNDS
@@ -105,23 +105,31 @@ const createScene = async function() {
         )
     );
 
-    // STEP 5a: Set up a "click" effect - register a third actionChange the color of the mesh on click (BABYLON.ActionManager.OnPickTrigger)
-    function changeBoxColor() {
-        box.material.diffuseColor = BABYLON.Color3.Random();
-    }
-    
+    // STEP 5a: Set up a "click" effect - register a third action
+    // box.actionManager.registerAction(
+    //     //STEP 5b: Set up the action to change the color value
+    //     new BABYLON.SetValueAction(
+    //         // STEP 5c: Add a click action, and use a random color
+    //         BABYLON.ActionManager.OnPickTrigger, box, "material.diffuseColor", BABYLON.Color3.Random()
+    //     )
+    // );
+    // STEP 5d: Notice how you can only change the color of the box once - if we'd like to do it every time we click on the box, we'd have to re-register the action again and again - comment out the above STEP 5 code
+
+    // STEP 6a: Instead, let's register one action to run some code on each click - this will side-step the issue
     box.actionManager.registerAction(
+        // STEP 6b: Add a new BABYLON.ExecuteCodeAction
         new BABYLON.ExecuteCodeAction(
+            // STEP 6c: Add a OnPickTrigger that references a function called changeBoxColor
             BABYLON.ActionManager.OnPickTrigger,
             changeBoxColor
         )
     );
 
-    // box.actionManager.registerAction(
-    //     new BABYLON.SetValueAction(
-    //         BABYLON.ActionManager.OnPickTrigger, box, "material.diffuseColor", BABYLON.Color3.Random()
-    //     )
-    // );
+    // STEP 6d: Build a simple function to change the material.diffuseColor of the box to a random color
+    function changeBoxColor() {
+        box.material.diffuseColor = BABYLON.Color3.Random();
+    }
+
 
     // Return the scene
     return scene;
