@@ -47,7 +47,7 @@ const createScene = async function() {
     box.material = boxMat;
     // The initial position of the box is 0, 0, 0 so with the referenceSpaceType: "unbounded" it will be located on the viewer's head, which is the origin point of the scene - reposition the box as you'd like
     // box.position.y = 0.5;
-    // box.position.z = 0.5;
+    box.position.z = 0.5;
 
 
     /* SOUNDS
@@ -129,6 +129,9 @@ const createScene = async function() {
     function changeBoxColor() {
         box.material.diffuseColor = BABYLON.Color3.Random();
     }
+
+    // STEP 7: Make the box grabbable and moveable 
+    box.bakeCurrentTransformIntoVertices().addBehavior(new BABYLON.SixDofDragBehavior());
 
 
     // Return the scene
