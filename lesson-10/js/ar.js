@@ -1,6 +1,6 @@
 /* LESSON TODO
- * 1. Hover action
- * 2. Click action
+ * 1. Hover action DONE
+ * 2. Click action DONE
  * 3. Native GUI controls
  * 4. Plane detection (maybe leave this in Lesson 9?)
 
@@ -46,8 +46,8 @@ const createScene = async function() {
     boxMat.diffuseColor = new BABYLON.Color3(1, 0.6, 0);
     box.material = boxMat;
     // Move the box so it is not at your feet
-    box.position.y = 0.5;
-    box.position.z = 1;
+    // box.position.y = 0.5;
+    // box.position.z = 1;
 
 
     /* SOUNDS
