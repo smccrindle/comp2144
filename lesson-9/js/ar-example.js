@@ -1,3 +1,9 @@
+// Earcut troubleshooting
+
+console.log("Earcut:", earcut);
+BABYLON.Earcut = earcut;
+console.log("BABYLON.Earcut:", BABYLON.Earcut);
+
 
 // Get the canvas element as a const
 const canvas = document.getElementById("renderCanvas");
