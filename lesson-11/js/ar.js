@@ -40,7 +40,7 @@ const createScene = async function() {
     cylinder.material = cylinderMat;
     cylinder.position.x = -2; // Position the cylinder to the left
 
-    const pyramid = BABYLON.MeshBuilder.CreatePolyhedron("pyramid", { type: 1, size: 1, custom: { facets: [{ vertices: [0, 1, 2] }, { vertices: [0, 2, 3] }, { vertices: [0, 3, 1] }, { vertices: [1, 2, 3] }] } }, scene); //type:1 is a tetrahedron, which is then made into a pyramid via the custom facet creation.
+    const pyramid = BABYLON.MeshBuilder.CreateCylinder("pyramid", { height: 2, diameterTop: 0, diameterBottom: 1, tessellation: 4 }, scene);
     const pyramidMat = new BABYLON.StandardMaterial("pyramidMat", scene);
     pyramidMat.diffuseColor = new BABYLON.Color3(0, 0, 1); // Blue
     pyramid.material = pyramidMat;
@@ -52,6 +52,28 @@ const createScene = async function() {
     torus.material = torusMat;
     torus.position.y = 2; // position the Torus above the other meshes.
    
+
+    /* GUI
+    ---------------------------------------------------------------------------------------------------- */
+    const plane = BABYLON.Mesh.CreatePlane("plane", 2);
+    plane.parent = cylinder;
+    plane.position.y = 2;
+
+    plane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+
+    const advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane);
+
+    const button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Click Me");
+    button1.width = 1;
+    button1.height = 0.4;
+    button1.color = "white";
+    button1.fontSize = 50;
+    button1.background = "green";
+    button1.onPointerUpObservable.add(function() {
+        alert("you did it!");
+    });
+    advancedTexture.addControl(button1);
+
 
     /* SOUNDS
     ---------------------------------------------------------------------------------------------------- */
