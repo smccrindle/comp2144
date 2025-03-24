@@ -79,22 +79,22 @@ const createScene = async function() {
     // Simple rectangle label
     const plane2 = BABYLON.Mesh.CreatePlane("plane2", 2);
     plane2.parent = pyramid;
-    plane2.position.y = 2;
+    // plane2.position.y = 2;
 
     plane2.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
 
     const advancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane2);
 
     const rectangle = new BABYLON.GUI.Rectangle();
-    rectangle.width = 0.2;
-    rectangle.height = "40px";
+    rectangle.width = 0.5;
+    rectangle.height = "50px";
     rectangle.cornerRadius = 20;
     rectangle.color = "Orange";
     rectangle.thickness = 4;
     rectangle.background = "green";
     advancedTexture2.addControl(rectangle);
     rectangle.linkWithMesh(pyramid);   
-    rectangle.linkOffsetY = -150;
+    rectangle.linkOffsetY = -100;
 
     const label = new BABYLON.GUI.TextBlock();
     label.text = "pyramid";
