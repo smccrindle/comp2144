@@ -58,107 +58,86 @@ const createScene = async function() {
     /* TEXTBLOCK AND RECTANGLE ELEMENT */
 
     // STEP 1a: Create a simple plane for a rectangle label for the pyramid
-    const plane1 = BABYLON.Mesh.CreatePlane("plane1", 2);
+    
     // STEP 1b: Set the pyramid as the parent
-    plane1.parent = pyramid;
+    
     // STEP 1c: Position it up above the pyramid
-    plane1.position.y = 2;
+    
     // STEP 1d: Set the billboardMode so that it faces the viewer wherever they go
-    plane1.billboardMode = BABYLON.Mesh.BILLBOARDMODE_Y;
+    
 
     // STEP 2: With GUI controls in 3D, we apply them to a mesh with a texture
-    const advancedTexture1 = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane1);
+    
     
     // STEP 3a: Build out a BABYLON GUI Rectangle
-    const rectangle = new BABYLON.GUI.Rectangle();
+    
     // STEP 3b: Set the height, width, cornerRadius, color (foreground and background), and thickness
-    rectangle.width = 0.4;
-    rectangle.height = "80px";
-    rectangle.cornerRadius = 40;
-    rectangle.color = "Orange";
-    rectangle.thickness = 4;
-    rectangle.background = "green";
+    
     // STEP 3c: Apply the rectangle GUI element to the texture being applied to plane1
-    advancedTexture1.addControl(rectangle);
+    
     
     // STEP 4a: Add a label to the rectangle with TextBlock and set the text
-    const label = new BABYLON.GUI.TextBlock();
-    label.text = "Pyramid";
+    
     // STEP 4b: Attach the label to the above rectangle GUI element, and test it out with the headset
-    rectangle.addControl(label);
+    
 
 
     /* BUTTON ELEMENT */
 
     // STEP 5a: Create a simple button to identify and control the cylinder, beginning with another plane mesh
-    const plane2 = BABYLON.Mesh.CreatePlane("plane2", 2);
+    
     // STEP 5b: Make plane2 a child of the cylinder and position it above it
-    plane2.parent = cylinder;
-    plane2.position.y = 2;
+    
     // STEP 5c: Set the billboard mode to ALL
-    plane2.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+    
 
     // STEP 6: Create a new texture for the GUI elements to apply to plane2
-    const advancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane2);
+    
 
     // STEP 7a: Make a BABYLON GUI button element, and add some text 
-    const button = BABYLON.GUI.Button.CreateSimpleButton("button", "Click Me");
+    
     // STEP 7b: Set the height, width, color (foreground and background), and the font size
-    button.width = 1;
-    button.height = 0.4;
-    button.color = "white";
-    button.background = "grey";
-    button.fontSize = 50;
+    
     // STEP 7c: Add an event handler, and create an anonymous function to change the color of the mesh (see pre-built function changeMeshColor() below)
-    button.onPointerUpObservable.add(function() {
-        changeMeshColor();
-    });
+    
     // STEP 7d: Apply the button to the texture being applied to plane2, then try this GUI element in the headset
-    advancedTexture2.addControl(button);
+    
 
 
     /* SLIDER ELEMENT */
 
     // STEP 8a: Create another plane mesh that we will use to apply a slider control
-    const plane3 = BABYLON.Mesh.CreatePlane("plane3", 1);
+    
     // STEP 8b: Set plane3 to be a child of the torus, and position it Z at -1.5 so it is not in the middle of the mesh
-    plane3.parent = torus;
-    plane3.position.z = -1.5;
+    
     // STEP 8c: Billboard mode for this plane should be back to Y axis only (or X or Z if you'd like)
-    plane3.billboardMode = BABYLON.Mesh.BILLBOARDMODE_Y;
+    
 
     // STEP 9: Make a third texture upon which the slider control will be rendered on plane3
-    const advancedTexture3 = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane3);
+    
 
     // STEP 10a: Let's start with a simple text block to use as a header for the slider UI control element
-    const header = new BABYLON.GUI.TextBlock();
+    
     // STEP 10b: Apply the text content, the height, the color, and bump it up a bit to make room for the next element
-    header.text = "Y-rotation: 0 deg";
-    header.height = "30px";
-    header.color = "white";
-    header.top = "-50px";
+    
     // STEP 10c: Apply the header to the texture to go on plane3
-    advancedTexture3.addControl(header); 
+     
 
     // STEP 11a: Next up is the slider UI control itself
-    const slider = new BABYLON.GUI.Slider();
+    
     // STEP 11b: Configure the minimum and maximum values for the slider, and the initial value
-    slider.minimum = 0;
-    slider.maximum = 2 * Math.PI;
-    slider.value = 0;
+    
     // STEP 11c: Set the height and width, then bump the element down a bit so it doesn't collide with the above header
-    slider.height = "20px";
-    slider.width = "200px";
-    slider.top = "20px";
+    
     // STEP 12a: Build an event handler for the slider, that passes in the value to an anonymous function
-    slider.onValueChangedObservable.add(function(value) {
+    
         // STEP 12b: Update the header UI element text with the degrees of rotation of the torus
-        header.text = "Z-rotation: " + (BABYLON.Tools.ToDegrees(value) | 0) + " degrees";
+        
         // STEP 12c: Update the rotation.z value of the torus mesh itself
-        torus.rotation.z = value;
-    });
+        
+    
     // STEP 13: Apply the slider to the texture being applied to plane 3, then try it out in the headset (you may need to walk around the torus to get to the slider control)
-    advancedTexture3.addControl(slider);
+    
 
 
     /* OTHER FUNCTIONS
