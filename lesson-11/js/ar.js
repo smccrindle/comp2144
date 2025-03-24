@@ -56,53 +56,53 @@ const createScene = async function() {
     /* GUI
     ---------------------------------------------------------------------------------------------------- */
     
-    // Simple button label
-    const plane = BABYLON.Mesh.CreatePlane("plane", 2);
-    plane.parent = cylinder;
-    plane.position.y = 2;
+    // STEP X: Create a simple rectangle label
+    const plane1 = BABYLON.Mesh.CreatePlane("plane1", 2);
+    plane1.parent = pyramid;
+    plane1.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
 
-    plane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
-
-    const advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane);
-
-    const button1 = BABYLON.GUI.Button.CreateSimpleButton("button1", "Click Me");
-    button1.width = 1;
-    button1.height = 0.4;
-    button1.color = "white";
-    button1.fontSize = 50;
-    button1.background = "grey";
-    button1.onPointerUpObservable.add(function() {
-        changeMeshColor();
-    });
-    advancedTexture.addControl(button1);
-
-    // Simple rectangle label
-    const plane2 = BABYLON.Mesh.CreatePlane("plane2", 2);
-    plane2.parent = pyramid;
-    // plane2.position.y = 2;
-
-    plane2.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
-
-    const advancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane2);
-
+    const advancedTexture1 = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane1);
+    
     const rectangle = new BABYLON.GUI.Rectangle();
-    rectangle.width = 0.5;
+    rectangle.width = "300px";
     rectangle.height = "50px";
-    rectangle.cornerRadius = 20;
+    rectangle.cornerRadius = "25px";
     rectangle.color = "Orange";
-    rectangle.thickness = 4;
+    rectangle.thickness = "5px";
     rectangle.background = "green";
-    advancedTexture2.addControl(rectangle);
     rectangle.linkWithMesh(pyramid);   
-    rectangle.linkOffsetY = -100;
+    rectangle.linkOffsetY = "-100px";
+    advancedTexture1.addControl(rectangle);
 
     const label = new BABYLON.GUI.TextBlock();
     label.text = "pyramid";
     rectangle.addControl(label);
 
+
+    // STEP X: Create a simple button label
+    const plane2 = BABYLON.Mesh.CreatePlane("plane2", 2);
+    plane2.parent = cylinder;
+    plane2.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+
+    const advancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane2);
+
+    const button = BABYLON.GUI.Button.CreateSimpleButton("button", "Click Me");
+    button.width = 1;
+    button.height = 0.4;
+    button.color = "white";
+    button.fontSize = 50;
+    button.background = "grey";
+    button.onPointerUpObservable.add(function() {
+        changeMeshColor();
+    });
+    advancedTexture2.addControl(button);
+
+
+
+
     /* BEHAVIOURS
     ---------------------------------------------------------------------------------------------------- */
-    pyramid.bakeCurrentTransformIntoVertices().addBehavior(new BABYLON.SixDofDragBehavior());
+    // pyramid.bakeCurrentTransformIntoVertices().addBehavior(new BABYLON.SixDofDragBehavior());
 
     /* OTHER FUNCTIONS
     ---------------------------------------------------------------------------------------------------- */
