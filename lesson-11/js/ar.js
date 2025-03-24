@@ -77,8 +77,6 @@ const createScene = async function() {
     label.text = "Pyramid";
     rectangle.addControl(label);
 
-    // rectangle.linkWithMesh(pyramid);   
-    // rectangle.linkOffsetY = -100;
 
 
     // STEP X: Create a simple button label
@@ -100,7 +98,33 @@ const createScene = async function() {
     });
     advancedTexture2.addControl(button);
 
+    // STEP X: Create a slider to control a mesh rotation
+    const plane3 = BABYLON.Mesh.CreatePlane("plane3", 2);
+    plane3.parent = torus;
+    plane3.position.y = 1;
+    plane3.billboardMode = BABYLON.Mesh.BILLBOARDMODE_Y;
 
+    const advancedTexture3 = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane3);
+
+    const header = new BABYLON.GUI.TextBlock();
+    header.text = "Y-rotation: 0 deg";
+    header.height = "30px";
+    header.color = "white";
+    advancedTexture3.addControl(header); 
+
+    const slider = new BABYLON.GUI.Slider();
+    slider.minimum = 0;
+    slider.maximum = 2 * Math.PI;
+    slider.value = 0;
+    slider.height = "20px";
+    slider.width = "200px";
+    slider.onValueChangedObservable.add(function(value) {
+        header.text = "Z-rotation: " + (BABYLON.Tools.ToDegrees(value) | 0) + " deg";
+        if (torus) {
+            torus.rotation.z = value;
+        }
+    });
+    advancedTexture3.addControl(slider);
 
 
     /* BEHAVIOURS
