@@ -36,21 +36,21 @@ const createScene = async function() {
     // Create a few mesh objects.
     const cylinder = BABYLON.MeshBuilder.CreateCylinder("cylinder", { height: 2, diameter: 1 }, scene);
     const cylinderMat = new BABYLON.StandardMaterial("cylinderMat", scene);
-    cylinderMat.diffuseColor = new BABYLON.Color3(0, 1, 0); // Green
+    cylinderMat.diffuseColor = new BABYLON.Color3(0, 1, 0);
     cylinder.material = cylinderMat;
-    cylinder.position.x = -2; // Position the cylinder to the left
+    cylinder.position.x = -2;
 
     const pyramid = BABYLON.MeshBuilder.CreateCylinder("pyramid", { height: 2, diameterTop: 0, diameterBottom: 1, tessellation: 4 }, scene);
     const pyramidMat = new BABYLON.StandardMaterial("pyramidMat", scene);
-    pyramidMat.diffuseColor = new BABYLON.Color3(0, 0, 1); // Blue
+    pyramidMat.diffuseColor = new BABYLON.Color3(0, 0, 1);
     pyramid.material = pyramidMat;
-    pyramid.position.x = 2; // Position the pyramid to the right
+    pyramid.position.x = 2;
 
     const torus = BABYLON.MeshBuilder.CreateTorus("torus", { diameter: 1, thickness: 0.3, tessellation: 32 }, scene);
     const torusMat = new BABYLON.StandardMaterial("torusMat", scene);
-    torusMat.diffuseColor = new BABYLON.Color3(1, 0, 1); // Magenta
+    torusMat.diffuseColor = new BABYLON.Color3(1, 0, 1);
     torus.material = torusMat;
-    torus.position.y = 2; // position the Torus above the other meshes.
+    torus.position.y = 0.5;
    
 
     /* GUI
@@ -60,7 +60,7 @@ const createScene = async function() {
     const plane1 = BABYLON.Mesh.CreatePlane("plane1", 2);
     plane1.parent = pyramid;
     plane1.position.y = 2;
-    plane1.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+    plane1.billboardMode = BABYLON.Mesh.BILLBOARDMODE_Y;
 
     const advancedTexture1 = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane1);
     
