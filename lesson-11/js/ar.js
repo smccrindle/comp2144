@@ -55,6 +55,8 @@ const createScene = async function() {
 
     /* GUI
     ---------------------------------------------------------------------------------------------------- */
+    
+    // Simple button label
     const plane = BABYLON.Mesh.CreatePlane("plane", 2);
     plane.parent = cylinder;
     plane.position.y = 2;
@@ -74,11 +76,33 @@ const createScene = async function() {
     });
     advancedTexture.addControl(button1);
 
+    // Simple rectangle label
+    const plane2 = BABYLON.Mesh.CreatePlane("plane2", 2);
+    plane2.parent = pyramid;
+    plane2.position.y = 2;
 
+    plane2.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+
+    const advancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane2);
+
+    const rectangle = new BABYLON.GUI.Rectangle();
+    rectangle.width = 0.2;
+    rectangle.height = "40px";
+    rectangle.cornerRadius = 20;
+    rectangle.color = "Orange";
+    rectangle.thickness = 4;
+    rectangle.background = "green";
+    advancedTexture.addControl(rectangle);
+    rectangle.linkWithMesh(pyramid);   
+    rectangle.linkOffsetY = -150;
+
+    const label = new BABYLON.GUI.TextBlock();
+    label.text = "pyramid";
+    label.addControl(plane2);
 
     /* BEHAVIOURS
     ---------------------------------------------------------------------------------------------------- */
-    cylinder.bakeCurrentTransformIntoVertices().addBehavior(new BABYLON.SixDofDragBehavior());
+    pyramid.bakeCurrentTransformIntoVertices().addBehavior(new BABYLON.SixDofDragBehavior());
 
     /* OTHER FUNCTIONS
     ---------------------------------------------------------------------------------------------------- */
