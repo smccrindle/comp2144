@@ -92,7 +92,7 @@ const createScene = async function() {
     rectangle.color = "Orange";
     rectangle.thickness = 4;
     rectangle.background = "green";
-    advancedTexture.addControl(rectangle);
+    advancedTexture2.addControl(rectangle);
     rectangle.linkWithMesh(pyramid);   
     rectangle.linkOffsetY = -150;
 
