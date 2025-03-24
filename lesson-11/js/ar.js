@@ -98,7 +98,7 @@ const createScene = async function() {
 
     const label = new BABYLON.GUI.TextBlock();
     label.text = "pyramid";
-    label.addControl(plane2);
+    rectangle.addControl(label);
 
     /* BEHAVIOURS
     ---------------------------------------------------------------------------------------------------- */
