@@ -72,9 +72,9 @@ const createScene = async function() {
     // STEP 3a: Build out a BABYLON GUI Rectangle
     const rectangle = new BABYLON.GUI.Rectangle();
     // STEP 3b: Set the height, width, cornerRadius, color (foreground and background), and thickness
-    rectangle.width = "300px";
-    rectangle.height = "100px";
-    rectangle.cornerRadius = "50px";
+    rectangle.width = 0.4;
+    rectangle.height = "80px";
+    rectangle.cornerRadius = 40;
     rectangle.color = "Orange";
     rectangle.thickness = 4;
     rectangle.background = "green";
