@@ -101,7 +101,7 @@ const createScene = async function() {
     // STEP X: Create a slider to control a mesh rotation
     const plane3 = BABYLON.Mesh.CreatePlane("plane3", 2);
     plane3.parent = torus;
-    plane3.position.y = 0;
+    plane3.position.z = -1.5;
     plane3.billboardMode = BABYLON.Mesh.BILLBOARDMODE_Y;
 
     const advancedTexture3 = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane3);
