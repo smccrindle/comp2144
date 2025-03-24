@@ -63,25 +63,28 @@ const createScene = async function() {
 
     const advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane);
 
-    const button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Click Me");
+    const button1 = BABYLON.GUI.Button.CreateSimpleButton("button1", "Click Me");
     button1.width = 1;
     button1.height = 0.4;
     button1.color = "white";
     button1.fontSize = 50;
-    button1.background = "green";
+    button1.background = "grey";
     button1.onPointerUpObservable.add(function() {
-        alert("you did it!");
+        changeMeshColor(button1);
     });
     advancedTexture.addControl(button1);
 
 
-    /* SOUNDS
-    ---------------------------------------------------------------------------------------------------- */
-    
 
-    /* ANIMATION
+    /* BEHAVIOURS
     ---------------------------------------------------------------------------------------------------- */
+    cylinder.bakeCurrentTransformIntoVertices().addBehavior(new BABYLON.SixDofDragBehavior());
 
+    /* OTHER FUNCTIONS
+    ---------------------------------------------------------------------------------------------------- */
+    function changeMeshColor(myMesh) {
+        myMesh.material.diffuseColor = BABYLON.Color3.Random();
+    };
 
     /* ENABLE AR
     ---------------------------------------------------------------------------------------------------- */
