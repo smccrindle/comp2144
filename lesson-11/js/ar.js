@@ -72,7 +72,7 @@ const createScene = async function() {
     button1.fontSize = 50;
     button1.background = "grey";
     button1.onPointerUpObservable.add(function() {
-        changeMeshColor(button1);
+        changeMeshColor();
     });
     advancedTexture.addControl(button1);
 
@@ -106,8 +106,8 @@ const createScene = async function() {
 
     /* OTHER FUNCTIONS
     ---------------------------------------------------------------------------------------------------- */
-    function changeMeshColor(myMesh) {
-        myMesh.material.diffuseColor = BABYLON.Color3.Random();
+    function changeMeshColor() {
+        cylinder.material.diffuseColor = BABYLON.Color3.Random();
     };
 
     /* ENABLE AR
