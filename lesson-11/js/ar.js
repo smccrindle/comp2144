@@ -58,6 +58,8 @@ const createScene = async function() {
     
     // STEP X: Create a simple rectangle label
     const plane1 = BABYLON.Mesh.CreatePlane("plane1", 2);
+    plane1.parent = pyramid;
+    plane1.position.y = 2;
     plane1.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
 
     const advancedTexture1 = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane1);
@@ -75,13 +77,14 @@ const createScene = async function() {
     label.text = "Pyramid";
     rectangle.addControl(label);
 
-    rectangle.linkWithMesh(pyramid);   
-    rectangle.linkOffsetY = -100;
+    // rectangle.linkWithMesh(pyramid);   
+    // rectangle.linkOffsetY = -100;
 
 
     // STEP X: Create a simple button label
     const plane2 = BABYLON.Mesh.CreatePlane("plane2", 2);
     plane2.parent = cylinder;
+    plane2.position.y = 2;
     plane2.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
 
     const advancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane2);
