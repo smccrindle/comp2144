@@ -40,6 +40,6 @@ document.getElementById('connectButton').addEventListener('click', () => {
 
 document.getElementById('disconnectButton').addEventListener('click', () => {
     if (btDevice) {
-        btDevice.BluetoothRemoteGATTServer.disconnect();
+        btDevice.disconnect();
     }
 });
