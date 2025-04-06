@@ -12,23 +12,23 @@ document.getElementById('connectButton').addEventListener('click', () => {
     })
     .then(server => {
         statusElement.textContent = 'Connected. Getting Battery Service...';
-        // return server.getPrimaryService('battery_service');
-        return server.getPrimaryService('device_information');
+        return server.getPrimaryService('battery_service');
+        // return server.getPrimaryService('device_information');
     })
     .then(service => {
-        // statusElement.textContent = 'Getting Battery Level Characteristic...';
-        // return service.getCharacteristic('battery_level');
-        statusElement.textContent = 'Getting Manufacturer Characteristic...';
-        return service.getCharacteristic('manufacturer_name');
+        statusElement.textContent = 'Getting Battery Level Characteristic...';
+        return service.getCharacteristic('battery_level');
+        // statusElement.textContent = 'Getting Manufacturer Characteristic...';
+        // return service.getCharacteristic('manufacturer_name');
     })
     .then(characteristic => {
         return characteristic.readValue();
     })
     .then(value => {
-        // const batteryLevel = value.getUint8(0);
-        // statusElement.textContent = 'Battery Level: ' + batteryLevel + '%';
-        statusElement.textContent = `Manufacturer: ${value}`;
-        console.log(value);
+        const batteryLevel = value.getUint8(0);
+        statusElement.textContent = 'Battery Level: ' + batteryLevel + '%';
+        // statusElement.textContent = `Manufacturer: ${value}`;
+        // console.log(value);
     })
     .catch(error => {
         statusElement.textContent = 'Error: ' + error;
