@@ -34,3 +34,7 @@ document.getElementById('connectButton').addEventListener('click', () => {
         statusElement.textContent = 'Error: ' + error;
     });
 });
+
+document.getElementById('disconnectButton').addEventListener('click', () => {
+    BluetoothRemoteGATTServer.disconnect();
+});
