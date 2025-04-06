@@ -39,7 +39,7 @@ document.getElementById('connectButton').addEventListener('click', () => {
 });
 
 document.getElementById('disconnectButton').addEventListener('click', () => {
-    if (btDevice && btDevice.gatt.connected) {
+    if (btDevice && btDevice.connected) {
         btDevice.gatt.disconnect();
         statusElement.textContent = 'Disconnecting...';
         btDevice.gatt.addEventListener('gattserverdisconnected', () => {
