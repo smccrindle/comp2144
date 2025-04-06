@@ -39,9 +39,14 @@ document.getElementById('connectButton').addEventListener('click', () => {
 });
 
 document.getElementById('disconnectButton').addEventListener('click', () => {
-    if (btDevice) {
-        btDevice.disconnect();
+    if (btDevice && btDevice.gatt.connected) {
+        btDevice.gatt.disconnect();
+        statusElement.textContent = 'Disconnecting...';
+        btDevice.gatt.addEventListener('gattserverdisconnected', () => {
+            statusElement.textContent = 'GATT Server Disconnected.';
+            btDevice = null; // Clear the device reference
+        });
+    } else {
+        statusElement.textContent = 'No device connected to disconnect from.';
     }
-    statusElement.textContent = 'Disconnected. Getting Battery Service...';
-    console.log(btDevice.getPrimaryService('battery_service'));
 });
