@@ -28,6 +28,7 @@ document.getElementById('connectButton').addEventListener('click', () => {
         // const batteryLevel = value.getUint8(0);
         // statusElement.textContent = 'Battery Level: ' + batteryLevel + '%';
         statusElement.textContent = `Manufacturer: ${value}`;
+        console.log(value);
     })
     .catch(error => {
         statusElement.textContent = 'Error: ' + error;
