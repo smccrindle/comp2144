@@ -10,11 +10,11 @@ document.getElementById('connectButton').addEventListener('click', () => {
     })
     .then(device => {
         statusElement.textContent = 'Connecting to ' + device.name + '...';
+        btDevice = device.gatt;
         return device.gatt.connect();
     })
     .then(server => {
         statusElement.textContent = 'Connected. Getting Battery Service...';
-        btDevice = server;
         return server.getPrimaryService('battery_service');
         // return server.getPrimaryService('device_information');
     })
