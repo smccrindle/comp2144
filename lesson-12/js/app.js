@@ -2,7 +2,7 @@ let btDevice;
 const statusElement = document.getElementById('status');
 
 document.getElementById('connectButton').addEventListener('click', () => {
-    
+
     // Request a Bluetooth device
     navigator.bluetooth.requestDevice({
         acceptAllDevices: true,
@@ -10,7 +10,7 @@ document.getElementById('connectButton').addEventListener('click', () => {
     })
     .then(device => {
         statusElement.textContent = 'Connecting to ' + device.name + '...';
-        btDevice = device.gatt;
+        btDevice = device.gatt; // Store the GATT server directly
         return device.gatt.connect();
     })
     .then(server => {
@@ -40,9 +40,9 @@ document.getElementById('connectButton').addEventListener('click', () => {
 
 document.getElementById('disconnectButton').addEventListener('click', () => {
     if (btDevice && btDevice.connected) {
-        btDevice.gatt.disconnect();
+        btDevice.disconnect();
         statusElement.textContent = 'Disconnecting...';
-        btDevice.gatt.addEventListener('gattserverdisconnected', () => {
+        btDevice.addEventListener('gattserverdisconnected', () => {
             statusElement.textContent = 'GATT Server Disconnected.';
             btDevice = null; // Clear the device reference
         });
