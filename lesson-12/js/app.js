@@ -42,4 +42,6 @@ document.getElementById('disconnectButton').addEventListener('click', () => {
     if (btDevice) {
         btDevice.disconnect();
     }
+    statusElement.textContent = 'Disconnected. Getting Battery Service...';
+    console.log(server.getPrimaryService('battery_service'));
 });
