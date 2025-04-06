@@ -19,7 +19,7 @@ document.getElementById('connectButton').addEventListener('click', () => {
         // statusElement.textContent = 'Getting Battery Level Characteristic...';
         // return service.getCharacteristic('battery_level');
         statusElement.textContent = 'Getting Manufacturer Characteristic...';
-        return service.getCharacteristic('manufacturer_name_string');
+        return service.getCharacteristic('manufacturer_name');
     })
     .then(characteristic => {
         return characteristic.readValue();
