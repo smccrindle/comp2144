@@ -1,54 +1,26 @@
-let btDevice;
-const statusElement = document.getElementById('status');
-
-alert("Dude!");
-
-document.getElementById('connectButton').addEventListener('click', () => {
-
-    // Request a Bluetooth device
-    navigator.bluetooth.requestDevice({
-        acceptAllDevices: true,
-        optionalServices: ['battery_service', 'device_information'] // array of services
-    })
-    .then(device => {
-        statusElement.textContent = 'Connecting to ' + device.name + '...';
-        btDevice = device.gatt; // Store the GATT server directly
-        return device.gatt.connect();
-    })
-    .then(server => {
-        statusElement.textContent = 'Connected. Getting Battery Service...';
-        return server.getPrimaryService('battery_service');
-        // return server.getPrimaryService('device_information');
-    })
-    .then(service => {
-        statusElement.textContent = 'Getting Battery Level Characteristic...';
-        return service.getCharacteristic('battery_level');
-        // statusElement.textContent = 'Getting Manufacturer Characteristic...';
-        // return service.getCharacteristic('manufacturer_name');
-    })
-    .then(characteristic => {
-        return characteristic.readValue();
-    })
-    .then(value => {
-        const batteryLevel = value.getUint8(0);
-        statusElement.textContent = 'Battery Level: ' + batteryLevel + '%';
-        // statusElement.textContent = `Manufacturer: ${value}`;
-        // console.log(value);
-    })
-    .catch(error => {
-        statusElement.textContent = 'Error: ' + error;
-    });
-});
-
-document.getElementById('disconnectButton').addEventListener('click', () => {
-    if (btDevice && btDevice.connected) {
-        btDevice.disconnect();
-        statusElement.textContent = 'Disconnecting...';
-        btDevice.addEventListener('gattserverdisconnected', () => {
-            statusElement.textContent = 'GATT Server Disconnected.';
-            btDevice = null; // Clear the device reference
-        });
-    } else {
-        statusElement.textContent = 'No device connected to disconnect from.';
-    }
-});
+// STEP 1: Create the main program asynchronous function
+async function startProgram() {
+	// STEP 2: Instruct the main LED light with rgb (using object notation)
+	setMainLed({ r: 100, g: 50, b: 255 });
+	// STEP 3: Text-to-speech
+	await speak("COMP2144 Extended Reality and Emerging Technologies", true);
+	// STEP 4: Wait for a short period of time
+	await delay(1);
+	// STEP 5: Construct a loop that will iterate 4 times
+	for (var i = 0; i < 4; i++) {
+		// STEP 6: Set the main LED light to a random color
+		setMainLed(getRandomColor());
+		// STEP 7: Play a fun random sound
+		await Sound.play(true);
+		// STEP 8: Use the LCD display screen
+		await setDisplayImage("slightly-smiling");
+		// STEP 9: Turn 90 degrees, then roll at speed 0-255, for 1 second
+		await roll((getHeading() + 90), 30, 1);
+		// STEP 10: Announce the current navigational heading in degrees
+		await speak("My heading is " + getHeading(), true);
+		// STEP 11: Take a one second break
+		await delay(1);
+	}
+	// STEP 12: Say how far the robot has travelled (in cm)
+	await speak("I have travelled " + getDistance() + " centimeters", true);
+}
