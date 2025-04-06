@@ -1,3 +1,5 @@
+let btDevice;
+
 document.getElementById('connectButton').addEventListener('click', () => {
     const statusElement = document.getElementById('status');
     
@@ -12,6 +14,7 @@ document.getElementById('connectButton').addEventListener('click', () => {
     })
     .then(server => {
         statusElement.textContent = 'Connected. Getting Battery Service...';
+        btDevice = server;
         return server.getPrimaryService('battery_service');
         // return server.getPrimaryService('device_information');
     })
@@ -36,5 +39,7 @@ document.getElementById('connectButton').addEventListener('click', () => {
 });
 
 document.getElementById('disconnectButton').addEventListener('click', () => {
-    BluetoothRemoteGATTServer.disconnect();
+    if (btDevice) {
+        btDevice.BluetoothRemoteGATTServer.disconnect();
+    }
 });
