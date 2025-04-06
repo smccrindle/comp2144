@@ -1,7 +1,7 @@
 let btDevice;
+const statusElement = document.getElementById('status');
 
 document.getElementById('connectButton').addEventListener('click', () => {
-    const statusElement = document.getElementById('status');
     
     // Request a Bluetooth device
     navigator.bluetooth.requestDevice({
